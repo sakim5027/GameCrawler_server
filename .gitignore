@@ -138,3 +138,11 @@ review.json
 
 # code editro
 .vscode/
+
+#.pem
+cert.pem
+key.pem
+
+package-lock.json
+
+config/config.json
