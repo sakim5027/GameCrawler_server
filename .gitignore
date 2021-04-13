@@ -143,6 +143,4 @@ review.json
 cert.pem
 key.pem
 
-package-lock.json
-
 config/config.json
