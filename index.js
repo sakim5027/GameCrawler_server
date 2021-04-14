@@ -8,6 +8,7 @@ const logger = require('morgan');
 require("./models");
 
 const indexController = require("./controllers/index.js");
+const userController = require("./controllers/user.js");
 
 const app = express();
 
@@ -43,6 +44,11 @@ app.use(cors({
 //controller
 //index
 app.get("/", indexController);
+
+//user
+app.post("/user/login", userController.login);
+
+
 
 let server;
 
