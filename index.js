@@ -47,7 +47,7 @@ app.get("/", indexController);
 
 //user
 app.post("/user/login", userController.login);
-
+app.post("/user/logout", userController.logout);
 
 
 let server;
