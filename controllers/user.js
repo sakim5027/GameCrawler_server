@@ -55,6 +55,23 @@ module.exports = {
             res.send("success post signup");
         }
     },
+    findId: async (req, res) => {
+        const email = req.body.email;
+        
+        //db에서 이메일로 user정보 조회
+        const userInfo = await user.findOne({
+            where: { email }
+        });
+
+        if (!userInfo) {
+            res.status(404).send("post find-id error");
+        } else {
+            res.json({    
+                data : userInfo.user_id,    
+                message: "success post find-id"
+           });
+        }
+    },
     info: async (req, res) => {
         //db에서 user정보 조회
         const userInfo = await user.findOne({

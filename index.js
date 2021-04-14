@@ -52,6 +52,7 @@ app.post("/user/check-login-id", userController.checkLoginId); //아이디중복
 app.post("/user/signup", userController.signup); //회원가입
 app.get("/user/info", userController.info); //회원정보조회
 app.put("/user/edit", userController.edit); //회원정보수정
+app.post("/user/find-id", userController.findId); //아이디찾기
 
 let server;
 
