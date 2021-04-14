@@ -9,7 +9,7 @@ module.exports = {
         });
 
         if (!userInfo) {
-            res.status(500).send("post login error");
+            res.status(404).send("post login error");
         } else {
             //user_id session에 저장
             req.session.user_id = userInfo.user_id;
@@ -28,20 +28,6 @@ module.exports = {
         });
         res.status(200).send("success post logout");
     },
-    signup: async (req, res) => {
-        const { user_id, password, nickname, email, genre } = req.body;
-
-        //db에 user정보 저장
-        const userInfo = await user.create({
-            user_id, password, nickname, email, genre,
-            created_id: user_id, updated_id: user_id
-        });
-        if (!userInfo) {
-            res.status(500).send("post signup error");
-        } else {
-            res.send("success post signup");
-        }
-    },
     checkLoginId: async (req, res) => {
         const user_id = req.body.user_id;
 
@@ -53,6 +39,48 @@ module.exports = {
             res.status(404).send("post check-login-id error");
         } else {
             res.send("success post check-login-id");
+        }
+    },
+    signup: async (req, res) => {
+        const { user_id, password, nickname, email, genre } = req.body;
+
+        //db에 user정보 저장
+        const result = await user.create({
+            user_id, password, nickname, email, genre,
+            created_id: user_id, updated_id: user_id
+        });
+        if (!result) {
+            res.status(500).send("post signup error");
+        } else {
+            res.send("success post signup");
+        }
+    },
+    info: async (req, res) => {
+        //db에서 user정보 조회
+        const userInfo = await user.findOne({
+            where: { user_id: req.session.user_id }
+        });
+
+        const { password, nickname, email, genre } = userInfo;
+        if (!userInfo) {
+            res.status(404).send("get info error");
+        } else {
+            res.json({ password, nickname, email, genre });
+        }
+    },
+    edit: async (req, res) => {
+        const { password, nickname, email, genre } = req.body;
+
+        //db의 user정보 수정
+        const result = await user.update({ password, nickname, email, genre },
+            {
+                where: { user_id: req.session.user_id }
+            });
+
+        if (!result) {
+            res.status(500).send("put edit error");
+        } else {
+            res.send("success put edit");
         }
     }
 };
