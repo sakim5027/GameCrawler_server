@@ -9,7 +9,7 @@ module.exports = {
     });
 
     if (!userInfo) {
-      res.status(404).send("post login error");
+      res.status(500).send("post login error");
     } else {
       //user_id session에 저장
       req.session.user_id = userInfo.user_id;
@@ -28,4 +28,18 @@ module.exports = {
     });
     res.status(200).send("success post logout");
   },
+  signup: async(req, res) => {
+    const { user_id, password, nickname, email, genre } = req.body;
+
+    //db에 user정보 저장
+    const userInfo = await user.create({
+        user_id, password, nickname, email, genre,
+        created_id:user_id, updated_id:user_id
+    });
+    if (!userInfo) {
+      res.status(500).send("post signup error");
+    } else {
+      res.send("success post signup");
+    }
+  }
 };

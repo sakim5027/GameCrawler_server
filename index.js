@@ -46,9 +46,9 @@ app.use(cors({
 app.get("/", indexController);
 
 //user
-app.post("/user/login", userController.login);
-app.post("/user/logout", userController.logout);
-
+app.post("/user/login", userController.login); //로그인
+app.post("/user/logout", userController.logout); //로그아웃
+app.post("/user/signup", userController.signup); //회원가입
 
 let server;
 
