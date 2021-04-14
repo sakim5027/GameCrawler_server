@@ -20,5 +20,12 @@ module.exports = {
         "message": "success post login"
     });
     }
-  }
+  },
+  logout: (req, res) => {
+    //세션 해제
+    req.session.destroy(function () {
+      req.session;
+    });
+    res.status(200).send("success post logout");
+  },
 };
