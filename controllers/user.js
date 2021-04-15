@@ -1,4 +1,6 @@
 const { user } = require("../models");
+const mailUtil = require("../util/mail");
+
 module.exports = {
     login: async (req, res) => {
         const { user_id, password } = req.body;
@@ -70,6 +72,28 @@ module.exports = {
                 data : userInfo.user_id,    
                 message: "success post find-id"
            });
+        }
+    },
+    findPassword: async(req, res) => {
+        const { user_id, email } = req.body;
+        
+        //db에서 user정보 조회
+        const userInfo = await user.findOne({
+            where: { user_id, email }
+        });
+        if (!userInfo) {
+            res.status(404).send("post find-password error");
+        } else {
+            //메일 전송
+            let toInfo = `${userInfo.nickname}<${userInfo.email}>`;
+            let subject = "비밀번호 안내입니다";
+            let contents = `<div><span>비밀번호는 <b>${userInfo.password}</b> 입니다.</span></div>`; 
+            const result = await mailUtil.sendMail(toInfo, subject, contents);
+            if(!result){
+                res.status(500).send("post find-password sendMail error");
+            }else{
+                res.send("success post find-password");
+            }
         }
     },
     info: async (req, res) => {
