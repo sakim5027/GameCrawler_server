@@ -9,6 +9,7 @@ require("./models");
 
 const indexController = require("./controllers/index.js");
 const userController = require("./controllers/user.js");
+const reviewController = require("./controllers/review.js");
 
 const app = express();
 
@@ -52,6 +53,9 @@ app.post("/user/check-login-id", userController.checkLoginId); //아이디중복
 app.post("/user/signup", userController.signup); //회원가입
 app.get("/user/info", userController.info); //회원정보조회
 app.put("/user/edit", userController.edit); //회원정보수정
+
+//review
+app.post("/review", reviewController.addReview); //리뷰등록
 
 let server;
 
