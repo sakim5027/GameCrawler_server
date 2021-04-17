@@ -28,7 +28,7 @@ module.exports = {
       genre: {
         type: Sequelize.STRING(30)
       },
-      auth_key: {
+      auth_id: {
         type: Sequelize.STRING(50)
       },
       use_yn: {
