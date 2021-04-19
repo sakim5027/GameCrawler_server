@@ -28,5 +28,21 @@ module.exports = {
         } else {
             res.send("success put review");
         }
+    },
+    deleteReview: async (req, res) => {
+        const id = req.body.review_id;
+
+        //db의 review정보 삭제
+        const result = await review.destroy({
+            where: {
+              id
+            }
+          });
+
+        if (!result) {
+            res.status(500).send("delete review error");
+        } else {
+            res.send("success delete review");
+        }
     }
 };
