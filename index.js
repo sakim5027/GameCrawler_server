@@ -61,6 +61,7 @@ app.put("/user/edit", userController.edit); //회원정보수정
 
 //review
 app.post("/review", reviewController.addReview); //리뷰등록
+app.put("/review", reviewController.modifyReview); //리뷰수정
 
 let server;
 
