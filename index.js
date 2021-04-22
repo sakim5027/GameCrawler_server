@@ -60,6 +60,7 @@ app.get("/user/info", userController.info); //회원정보조회
 app.put("/user/edit", userController.edit); //회원정보수정
 
 //review
+app.get("/reviews", reviewController.list); //리뷰목록정보조회
 app.post("/review", reviewController.regist); //리뷰등록
 app.get("/review/:review_id", reviewController.info); //리뷰정보조회
 app.put("/review", reviewController.modify); //리뷰수정

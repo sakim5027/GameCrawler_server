@@ -1,6 +1,51 @@
-const { review } = require("../models");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
+const { review, game } = require("../models");
 
 module.exports = {
+    list: async (req, res) => {
+        let reviewList = null;
+        const { game_name, user_id } = req.body;
+
+        //db에서 리뷰목록정보 조회
+        //게임명으로 조회할 경우
+        if (game_name) {
+            reviewList = await review.findAll({
+                attributes: [['id', 'review_id'], 'rate', 'story', 'graphic', 'hardness', 'music', 'ux', 'contents', 'user_id'],
+                include: [
+                    {
+                        model: game,
+                        required: true, //true는 inner join, false는 Left outer join
+                        attributes: [['id', 'game_id'], ['name', 'game_name'], ['cover_image_url', 'game_image']],
+                        where: (Sequelize.fn('lower', Sequelize.col('name')),{
+                            name: { [Op.like]: `%${game_name}%` }
+                        })
+                    }
+                ]
+            })
+
+        //user_id로 조회할 경우
+        } else if (user_id) {
+            reviewList = await review.findAll({
+                attributes: [['id', 'review_id'], 'rate', 'story', 'graphic', 'hardness', 'music', 'ux', 'contents', 'user_id'],
+                include: [
+                    {
+                        model: game,
+                        required: true, //true는 inner join, false는 Left outer join
+                        attributes: [['id', 'game_id'], ['name', 'game_name'], ['cover_image_url', 'game_image']]
+                    }
+                ],
+                where: { user_id }
+            });
+        }
+        console.log(reviewList);
+        if (reviewList.length === 0) {
+            res.status(404).send("get reviews error");
+        } else {
+            res.json({ data: { reviewList } });
+        }
+    },
     regist: async (req, res) => {
         const { game_id, rate, story, graphic, hardness, music, ux, contents } = req.body;
 
@@ -20,7 +65,7 @@ module.exports = {
 
         //db에서 리뷰정보 조회
         const reviewInfo = await review.findOne({
-            where: { id:review_id }
+            where: { id: review_id }
         });
 
         if (!reviewInfo) {
@@ -28,7 +73,7 @@ module.exports = {
         } else {
             const { rate, story, graphic, hardness, music, ux, contents } = reviewInfo;
 
-            res.json({ rate, story, graphic, hardness, music, ux, contents });
+            res.json({ data: { rate, story, graphic, hardness, music, ux, contents } });
         }
     },
     modify: async (req, res) => {
