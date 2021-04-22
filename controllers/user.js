@@ -102,10 +102,11 @@ module.exports = {
             where: { user_id: req.session.user_id }
         });
 
-        const { password, nickname, email, genre } = userInfo;
         if (!userInfo) {
             res.status(404).send("get info error");
         } else {
+            const { password, nickname, email, genre } = userInfo;
+        
             res.json({ password, nickname, email, genre });
         }
     },
