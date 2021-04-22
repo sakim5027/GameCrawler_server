@@ -39,7 +39,7 @@ module.exports = {
                 where: { user_id }
             });
         }
-        console.log(reviewList);
+        
         if (reviewList.length === 0) {
             res.status(404).send("get reviews error");
         } else {
