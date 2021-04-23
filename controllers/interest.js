@@ -1,6 +1,29 @@
 const { interest } = require("../models");
 
 module.exports = {
+    count: async (req, res) => {
+        const { game_id } = req.query;
+        let interestCount = null;
+
+        //db에서 관심카운트 조회
+        if (game_id) {
+            interestCount = await interest.findAndCountAll({
+                where: { game_id }
+            });
+        } else {
+            interestCount = await interest.findAndCountAll({
+                where: { user_id: req.session.user_id }
+            });
+        }
+
+        if (interestCount.count === 0) {
+            res.status(404).send("get count-interest error");
+        } else {
+            const { count } = interestCount;
+
+            res.json({ data: count });
+        }
+    },
     regist: async (req, res) => {
         const { game_id } = req.body;
 
