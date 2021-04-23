@@ -85,7 +85,7 @@ module.exports = {
                 where: { id: review_id }
             });
 
-        if (!result || result[0] === 0) {
+        if (!result || result.includes(0)) {
             res.status(500).send("put review error");
         } else {
             res.send("success put review");
@@ -101,7 +101,7 @@ module.exports = {
             }
         });
 
-        if (!result || result[0] === 0) {
+        if (!result || result.includes(0)) {
             res.status(500).send("delete review error");
         } else {
             res.send("success delete review");

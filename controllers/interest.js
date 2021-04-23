@@ -48,7 +48,7 @@ module.exports = {
             }
         });
 
-        if (!result || result[0] === 0) {
+        if (!result || result.includes(0)) {
             res.status(500).send("delete interest error");
         } else {
             res.send("success delete interest");

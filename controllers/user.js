@@ -119,7 +119,7 @@ module.exports = {
                 where: { user_id: req.session.user_id }
             });
 
-        if (!result || result[0] === 0) {
+        if (!result || result.includes(0)) {
             res.status(500).send("put edit error");
         } else {
             res.send("success put edit");
