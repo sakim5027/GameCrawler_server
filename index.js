@@ -69,6 +69,7 @@ app.delete("/review/:review_id", reviewController.delete); //리뷰삭제
 
 //interest
 app.post("/interest", interestController.regist); //관심등록
+app.delete("/interest/:interest_id", interestController.delete); //리뷰삭제
 
 let server;
 

@@ -94,7 +94,7 @@ module.exports = {
     delete: async (req, res) => {
         const id = req.params.review_id;
 
-        //db의 review정보 삭제
+        //db의 review정보 use_yn을 N으로 update (===삭제)
         const result = await review.update({use_yn:"N"},{
             where: {
                 id
