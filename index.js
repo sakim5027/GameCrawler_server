@@ -59,6 +59,7 @@ app.post("/user/find-id", userController.findId); //아이디찾기
 app.post("/user/find-password", userController.findPassword); //비밀번호찾기
 app.get("/user/info", userController.info); //회원정보조회
 app.put("/user/edit", userController.edit); //회원정보수정
+app.delete("/user/withdrawal", userController.withdrawal); //회원탈퇴
 
 //review
 app.get("/reviews", reviewController.list); //리뷰목록정보조회
