@@ -62,9 +62,9 @@ app.put("/user/edit", userController.edit); //회원정보수정
 //review
 app.get("/reviews", reviewController.list); //리뷰목록정보조회
 app.post("/review", reviewController.regist); //리뷰등록
-app.get("/review/:review_id", reviewController.info); //리뷰정보조회
+app.get("/review", reviewController.info); //리뷰정보조회
 app.put("/review", reviewController.modify); //리뷰수정
-app.delete("/review", reviewController.delete); //리뷰삭제
+app.delete("/review/:review_id", reviewController.delete); //리뷰삭제
 
 let server;
 
