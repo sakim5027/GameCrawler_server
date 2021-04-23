@@ -13,6 +13,7 @@ require("./models");
 const indexController = require("./controllers/index.js");
 const userController = require("./controllers/user.js");
 const reviewController = require("./controllers/review.js");
+const interestController = require("./controllers/interest.js");
 
 const app = express();
 
@@ -65,6 +66,9 @@ app.post("/review", reviewController.regist); //리뷰등록
 app.get("/review", reviewController.info); //리뷰정보조회
 app.put("/review", reviewController.modify); //리뷰수정
 app.delete("/review/:review_id", reviewController.delete); //리뷰삭제
+
+//interest
+app.post("/interest", interestController.regist); //관심등록
 
 let server;
 
