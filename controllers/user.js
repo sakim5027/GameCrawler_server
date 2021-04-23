@@ -119,7 +119,7 @@ module.exports = {
                 where: { user_id: req.session.user_id }
             });
 
-        if (!result) {
+        if (!result || result[0] === 0) {
             res.status(500).send("put edit error");
         } else {
             res.send("success put edit");
@@ -128,22 +128,30 @@ module.exports = {
     withdrawal: async (req, res) => {
         const user_id = req.session.user_id;
         let result = null;
+        
+        //db의 user정보 use_yn을 N으로 update (===삭제)
         result = await user.update({ use_yn: "N" },
             {
                 where: { user_id }
             });
+        
+        //db의 interest정보 use_yn을 N으로 update (===삭제)
         result = await interest.update({ use_yn: "N" },
             {
                 where: { user_id }
             });
+
+        //db의 review정보 use_yn을 N으로 update (===삭제)
         result = await review.update({ use_yn: "N" },
             {
                 where: { user_id }
             });
+
         //세션 해제
         req.session.destroy(function () {
             req.session;
         });
+        
         res.send("success delete withdrawal");
     }
 };
