@@ -14,7 +14,7 @@ const gameBatch = cron.schedule('0 5 * * *', () => {
     axios.post(`${server}/games`,
         `fields name, genres.*, platforms.name, involved_companies.company, age_ratings.*, first_release_date, cover.url;
     where name != null & genres != null & platforms != null & involved_companies != null & age_ratings != null & first_release_date != null & cover != null;
-    sort first_release_date desc;
+    sort created_at desc;
     limit 10;`
         , {
             headers: {
