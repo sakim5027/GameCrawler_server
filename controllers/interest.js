@@ -6,7 +6,7 @@ module.exports = {
     list: async (req, res) => {
         let dataArray = [];
 
-        //db에서 관심목록에 대한 장르 조회
+        //db에서 관심목록에 대한 장르목록 조회
         let genreList = await genre.findAll({
             attributes: [
                 ['id', 'genre_id'], ['name', 'genre_name']
@@ -34,8 +34,8 @@ module.exports = {
 
         let gameList = null;
         for (let i = 0; i < dataArray.length; i++) {
-            dataArray[i].interest_games = [];
-            dataArray[i].recommendation_games = [];
+            dataArray[i].interest_games = []; //관심게임 목록
+            dataArray[i].recommendation_games = []; //추천게임 목록
 
             //db에서 장르id로 관심목록에 대한 게임목록 조회
             gameList = await genre.findOne({
