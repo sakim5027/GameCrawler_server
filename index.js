@@ -13,6 +13,8 @@ require("./models");
 const indexController = require("./controllers/index.js");
 const userController = require("./controllers/user.js");
 const reviewController = require("./controllers/review.js");
+const interestController = require("./controllers/interest.js");
+const gameController = require("./controllers/game.js");
 
 const app = express();
 
@@ -58,13 +60,22 @@ app.post("/user/find-id", userController.findId); //아이디찾기
 app.post("/user/find-password", userController.findPassword); //비밀번호찾기
 app.get("/user/info", userController.info); //회원정보조회
 app.put("/user/edit", userController.edit); //회원정보수정
+app.delete("/user/withdrawal", userController.withdrawal); //회원탈퇴
 
 //review
 app.get("/reviews", reviewController.list); //리뷰목록정보조회
 app.post("/review", reviewController.regist); //리뷰등록
-app.get("/review/:review_id", reviewController.info); //리뷰정보조회
+app.get("/review", reviewController.info); //리뷰정보조회
 app.put("/review", reviewController.modify); //리뷰수정
-app.delete("/review", reviewController.delete); //리뷰삭제
+app.delete("/review/:review_id", reviewController.delete); //리뷰삭제
+
+//interest
+app.get("/count-interest", interestController.count); //관심갯수 카운트
+app.post("/interest", interestController.regist); //관심등록
+app.delete("/interest/:interest_id", interestController.delete); //리뷰삭제
+
+//game
+app.get("/game", gameController.info); //게임정보조회
 
 let server;
 
