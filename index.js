@@ -75,6 +75,7 @@ app.post("/interest", interestController.regist); //관심등록
 app.delete("/interest/:interest_id", interestController.delete); //리뷰삭제
 
 //game
+app.get("/games", gameController.list); //게임목록조회
 app.get("/game", gameController.info); //게임정보조회
 
 let server;
