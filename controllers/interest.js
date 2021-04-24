@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize');
-
 const { interest, game, genre } = require("../models");
 
 module.exports = {
