@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'game_id'
       });
 
+      game.hasMany(models.review, {
+        foreignKey: 'game_id'
+      });
+
       game.hasMany(models.interest, {
         foreignKey: 'game_id'
       });
