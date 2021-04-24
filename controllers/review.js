@@ -18,14 +18,15 @@ module.exports = {
                         model: game,
                         required: true, //true는 inner join, false는 Left outer join
                         attributes: [['id', 'game_id'], ['name', 'game_name'], ['cover_image_url', 'game_image']],
-                        where: (Sequelize.fn('lower', Sequelize.col('name')),{
+                        where: (Sequelize.fn('lower', Sequelize.col('name')), {
                             name: { [Op.like]: `%${game_name}%` }
                         })
                     }
-                ]
+                ],
+                where: { use_yn: 'Y' }
             })
 
-        //user_id로 조회할 경우
+            //user_id로 조회할 경우
         } else if (user_id) {
             reviewList = await review.findAll({
                 attributes: [['id', 'review_id'], 'rate', 'story', 'graphic', 'hardness', 'music', 'ux', 'contents', 'user_id'],
@@ -36,10 +37,10 @@ module.exports = {
                         attributes: [['id', 'game_id'], ['name', 'game_name'], ['cover_image_url', 'game_image']]
                     }
                 ],
-                where: { user_id }
+                where: { user_id, use_yn:'Y' }
             });
         }
-        
+
         if (reviewList.length === 0) {
             res.status(404).send("get reviews error");
         } else {
@@ -65,7 +66,7 @@ module.exports = {
 
         //db에서 리뷰정보 조회
         const reviewInfo = await review.findOne({
-            where: { id: review_id }
+            where: { id: review_id, use_yn:'Y' }
         });
 
         if (!reviewInfo) {
@@ -95,7 +96,7 @@ module.exports = {
         const id = req.params.review_id;
 
         //db의 review정보 use_yn을 N으로 update (===삭제)
-        const result = await review.update({use_yn:"N"},{
+        const result = await review.update({ use_yn: "N" }, {
             where: {
                 id
             }

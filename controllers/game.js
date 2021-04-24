@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-const { game, genre, interest } = require("../models");
+const { game, genre } = require("../models");
 
 module.exports = {
     list: async (req, res) => {
-        let { flag } = req.query
+        let { flag } = req.query;
         let { game_name, genre_id } = req.body;
         let gameList = null;
 
@@ -73,7 +73,7 @@ module.exports = {
         if (gameList.length === 0) {
             res.status(404).send("get games error");
         } else {
-            const dataArray = [];
+            let dataArray = [];
             for (let i = 0; i < gameList.length; i++) {
                 const { game_id, game_name, game_image, genres, interest_yn } = gameList[i].dataValues;
 
