@@ -70,6 +70,7 @@ app.put("/review", reviewController.modify); //리뷰수정
 app.delete("/review/:review_id", reviewController.delete); //리뷰삭제
 
 //interest
+app.get("/interests", interestController.list); //관심목록
 app.get("/count-interest", interestController.count); //관심갯수 카운트
 app.post("/interest", interestController.regist); //관심등록
 app.delete("/interest/:interest_id", interestController.delete); //리뷰삭제

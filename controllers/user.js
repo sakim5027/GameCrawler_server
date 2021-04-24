@@ -7,7 +7,7 @@ module.exports = {
 
         //db에서 user정보 조회
         const userInfo = await user.findOne({
-            where: { user_id, password }
+            where: { user_id, password, use_yn:'Y' }
         });
 
         if (!userInfo) {
@@ -35,13 +35,10 @@ module.exports = {
 
         //db에서 해당 user정보 조회
         const userInfo = await user.findOne({
-            where: { user_id }
+            where: { user_id, use_yn:'Y' }
         });
-        if (!userInfo) {
-            res.status(404).send("post check-login-id error");
-        } else {
-            res.send("success post check-login-id");
-        }
+        
+        res.json({"data":(userInfo)?'Y':'N'});
     },
     signup: async (req, res) => {
         const { user_id, password, nickname, email, genre } = req.body;
@@ -62,7 +59,7 @@ module.exports = {
 
         //db에서 이메일로 user정보 조회
         const userInfo = await user.findOne({
-            where: { email }
+            where: { email, use_yn:'Y' }
         });
 
         if (!userInfo) {
@@ -79,7 +76,7 @@ module.exports = {
 
         //db에서 user정보 조회
         const userInfo = await user.findOne({
-            where: { user_id, email }
+            where: { user_id, email, use_yn:'Y' }
         });
         if (!userInfo) {
             res.status(404).send("post find-password error");
@@ -99,7 +96,7 @@ module.exports = {
     info: async (req, res) => {
         //db에서 user정보 조회
         const userInfo = await user.findOne({
-            where: { user_id: req.session.user_id }
+            where: { user_id: req.session.user_id, use_yn:'Y' }
         });
 
         if (!userInfo) {
