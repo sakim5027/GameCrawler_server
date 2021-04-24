@@ -14,6 +14,7 @@ const indexController = require("./controllers/index.js");
 const userController = require("./controllers/user.js");
 const reviewController = require("./controllers/review.js");
 const interestController = require("./controllers/interest.js");
+const gameController = require("./controllers/game.js");
 
 const app = express();
 
@@ -72,6 +73,9 @@ app.delete("/review/:review_id", reviewController.delete); //리뷰삭제
 app.get("/count-interest", interestController.count); //관심갯수 카운트
 app.post("/interest", interestController.regist); //관심등록
 app.delete("/interest/:interest_id", interestController.delete); //리뷰삭제
+
+//game
+app.get("/game", gameController.info); //리뷰삭제
 
 let server;
 
