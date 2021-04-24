@@ -14,7 +14,7 @@ const gameBatch = cron.schedule('0 5 * * *', () => {
     axios.post(`${server}/games`,
         `fields name, genres.*, platforms.name, involved_companies.company, age_ratings.*, first_release_date, cover.url;
     where name != null & genres != null & platforms != null & involved_companies != null & age_ratings != null & first_release_date != null & cover != null;
-    sort first_release_date desc;
+    sort created_at desc; 
     limit 10;`
         , {
             headers: {
@@ -94,9 +94,9 @@ const addGameData = async (data) => {
 
         if (gameInfo) break; //db에 게임정보가 있는 경우
 
-        const platforms_name = platforms.map(platform => platform.name).join();
+        const platforms_name = platforms.map(platform => platform.name).join(', ');
         const involved_companies_name = await setInvolvedCompaniesName(involved_companies.map(involvedCompany => involvedCompany.company)); //게임제작사명 셋팅
-        const age_ratings_value = age_ratings.map(age_rating => age_ratings_caregory[age_rating.category] + " " + age_ratings_rating[age_rating.rating]).join();
+        const age_ratings_value = age_ratings.map(age_rating => age_ratings_caregory[age_rating.category] + " " + age_ratings_rating[age_rating.rating]).join(', ');
 
         //db에 게임정보 insert
         await game.create({

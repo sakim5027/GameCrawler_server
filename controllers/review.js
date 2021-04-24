@@ -61,7 +61,7 @@ module.exports = {
         }
     },
     info: async (req, res) => {
-        const { review_id } = req.params;
+        const { review_id } = req.query;
 
         //db에서 리뷰정보 조회
         const reviewInfo = await review.findOne({
@@ -85,23 +85,23 @@ module.exports = {
                 where: { id: review_id }
             });
 
-        if (!result) {
+        if (!result || result.includes(0)) {
             res.status(500).send("put review error");
         } else {
             res.send("success put review");
         }
     },
     delete: async (req, res) => {
-        const id = req.body.review_id;
+        const id = req.params.review_id;
 
-        //db의 review정보 삭제
-        const result = await review.destroy({
+        //db의 review정보 use_yn을 N으로 update (===삭제)
+        const result = await review.update({use_yn:"N"},{
             where: {
                 id
             }
         });
 
-        if (!result) {
+        if (!result || result.includes(0)) {
             res.status(500).send("delete review error");
         } else {
             res.send("success delete review");

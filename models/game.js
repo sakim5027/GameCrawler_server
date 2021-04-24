@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         through: 'game_genre',
         foreignKey: 'game_id'
       });
+
+      game.hasMany(models.interest, {
+        foreignKey: 'game_id'
+      });
     }
   };
   game.init({

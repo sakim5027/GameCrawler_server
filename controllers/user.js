@@ -1,4 +1,4 @@
-const { user } = require("../models");
+const { user, interest, review } = require("../models");
 const mailUtil = require("../util/mail");
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
         req.session.destroy(function () {
             req.session;
         });
-        res.status(200).send("success post logout");
+        res.send("success post logout");
     },
     checkLoginId: async (req, res) => {
         const user_id = req.body.user_id;
@@ -59,7 +59,7 @@ module.exports = {
     },
     findId: async (req, res) => {
         const email = req.body.email;
-        
+
         //db에서 이메일로 user정보 조회
         const userInfo = await user.findOne({
             where: { email }
@@ -68,15 +68,15 @@ module.exports = {
         if (!userInfo) {
             res.status(404).send("post find-id error");
         } else {
-            res.json({    
-                data : userInfo.user_id,    
+            res.json({
+                data: userInfo.user_id,
                 message: "success post find-id"
-           });
+            });
         }
     },
-    findPassword: async(req, res) => {
+    findPassword: async (req, res) => {
         const { user_id, email } = req.body;
-        
+
         //db에서 user정보 조회
         const userInfo = await user.findOne({
             where: { user_id, email }
@@ -87,11 +87,11 @@ module.exports = {
             //메일 전송
             let toInfo = `${userInfo.nickname}<${userInfo.email}>`;
             let subject = "비밀번호 안내입니다";
-            let contents = `<div><span>비밀번호는 <b>${userInfo.password}</b> 입니다.</span></div>`; 
+            let contents = `<div><span>비밀번호는 <b>${userInfo.password}</b> 입니다.</span></div>`;
             const result = await mailUtil.sendMail(toInfo, subject, contents);
-            if(!result){
+            if (!result) {
                 res.status(500).send("post find-password sendMail error");
-            }else{
+            } else {
                 res.send("success post find-password");
             }
         }
@@ -106,7 +106,7 @@ module.exports = {
             res.status(404).send("get info error");
         } else {
             const { password, nickname, email, genre } = userInfo;
-        
+
             res.json({ password, nickname, email, genre });
         }
     },
@@ -119,10 +119,39 @@ module.exports = {
                 where: { user_id: req.session.user_id }
             });
 
-        if (!result) {
+        if (!result || result.includes(0)) {
             res.status(500).send("put edit error");
         } else {
             res.send("success put edit");
         }
+    },
+    withdrawal: async (req, res) => {
+        const user_id = req.session.user_id;
+        let result = null;
+        
+        //db의 user정보 use_yn을 N으로 update (===삭제)
+        result = await user.update({ use_yn: "N" },
+            {
+                where: { user_id }
+            });
+        
+        //db의 interest정보 use_yn을 N으로 update (===삭제)
+        result = await interest.update({ use_yn: "N" },
+            {
+                where: { user_id }
+            });
+
+        //db의 review정보 use_yn을 N으로 update (===삭제)
+        result = await review.update({ use_yn: "N" },
+            {
+                where: { user_id }
+            });
+
+        //세션 해제
+        req.session.destroy(function () {
+            req.session;
+        });
+        
+        res.send("success delete withdrawal");
     }
 };
