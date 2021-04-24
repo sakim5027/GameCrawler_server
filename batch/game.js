@@ -94,9 +94,9 @@ const addGameData = async (data) => {
 
         if (gameInfo) break; //db에 게임정보가 있는 경우
 
-        const platforms_name = platforms.map(platform => platform.name).join();
+        const platforms_name = platforms.map(platform => platform.name).join(', ');
         const involved_companies_name = await setInvolvedCompaniesName(involved_companies.map(involvedCompany => involvedCompany.company)); //게임제작사명 셋팅
-        const age_ratings_value = age_ratings.map(age_rating => age_ratings_caregory[age_rating.category] + " " + age_ratings_rating[age_rating.rating]).join();
+        const age_ratings_value = age_ratings.map(age_rating => age_ratings_caregory[age_rating.category] + " " + age_ratings_rating[age_rating.rating]).join(', ');
 
         //db에 게임정보 insert
         await game.create({
