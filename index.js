@@ -40,7 +40,7 @@ app.use(express.json());
 app.use(logger('dev'));
 
 app.use(cors({
-  'origin': 'http://gamecrawler-client.s3-website.us-east-2.amazonaws.com/',
+  'origin': 'http://gamecrawler-client.s3-website.us-east-2.amazonaws.com',
   'methods': ['OPTIONS', 'GET', 'POST' ,'PUT', 'DELETE'],
   'allowedHeaders': 'Content-Type, Accept',
   'maxAge': 10,
