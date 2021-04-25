@@ -26,13 +26,13 @@ module.exports = {
                         )`),
                         'interest_yn'
                     ], //사용자가 해당 게임에 관심있는지 여부
-                    'createdAt'
+                    'first_release_date'
                 ],
                 include: [{
                     model: genre,
                     required: true, //true는 inner join, false는 Left outer join
                 }],
-                order: [['createdAt', 'DESC']],
+                order: [['first_release_date', 'DESC']],
                 limit:10
             });
         } else {
