@@ -1,4 +1,5 @@
 const { user, interest, review } = require("../models");
+const crypterUtil = require("../util/crypter");
 const mailUtil = require("../util/mail");
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
 
         //db에서 user정보 조회
         const userInfo = await user.findOne({
-            where: { user_id, password, use_yn:'Y' }
+            where: { user_id, password:crypterUtil.encrypt(password), use_yn:'Y' }
         });
 
         if (!userInfo) {
@@ -45,7 +46,7 @@ module.exports = {
 
         //db에 user정보 저장
         const result = await user.create({
-            user_id, password, nickname, email, genre,
+            user_id, password:crypterUtil.encrypt(password), nickname, email:crypterUtil.encrypt(email), genre,
             created_id: user_id, updated_id: user_id
         });
         if (!result) {
@@ -59,7 +60,7 @@ module.exports = {
 
         //db에서 이메일로 user정보 조회
         const userInfo = await user.findOne({
-            where: { email, use_yn:'Y' }
+            where: { email:crypterUtil.encrypt(email), use_yn:'Y' }
         });
 
         if (!userInfo) {
@@ -76,15 +77,15 @@ module.exports = {
 
         //db에서 user정보 조회
         const userInfo = await user.findOne({
-            where: { user_id, email, use_yn:'Y' }
+            where: { user_id, email:crypterUtil.encrypt(email), use_yn:'Y' }
         });
         if (!userInfo) {
             res.status(404).send("post find-password error");
         } else {
             //메일 전송
-            let toInfo = `${userInfo.nickname}<${userInfo.email}>`;
+            let toInfo = `${userInfo.nickname}<${crypterUtil.decrypt(userInfo.email)}>`;
             let subject = "비밀번호 안내입니다";
-            let contents = `<div><span>비밀번호는 <b>${userInfo.password}</b> 입니다.</span></div>`;
+            let contents = `<div><span>비밀번호는 <b>${crypterUtil.decrypt(userInfo.password)}</b> 입니다.</span></div>`;
             const result = await mailUtil.sendMail(toInfo, subject, contents);
             if (!result) {
                 res.status(500).send("post find-password sendMail error");
@@ -104,14 +105,14 @@ module.exports = {
         } else {
             const { password, nickname, email, genre } = userInfo;
 
-            res.json({ password, nickname, email, genre });
+            res.json({ nickname, email:crypterUtil.decrypt(email), genre });
         }
     },
     edit: async (req, res) => {
         const { password, nickname, email, genre } = req.body;
-
+        
         //db의 user정보 수정
-        const result = await user.update({ password, nickname, email, genre },
+        const result = await user.update({ password:crypterUtil.encrypt(password), nickname, email:crypterUtil.encrypt(email), genre },
             {
                 where: { user_id: req.session.user_id }
             });
