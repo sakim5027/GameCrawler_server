@@ -33,7 +33,7 @@ module.exports = {
                     required: true, //true는 inner join, false는 Left outer join
                 }],
                 order: [['first_release_date', 'DESC']],
-                limit:10
+                limit: 10
             });
         } else {
             //genre
@@ -70,21 +70,17 @@ module.exports = {
             });
         }
 
-        if (gameList.length === 0) {
-            res.status(404).send("get games error");
-        } else {
-            let dataArray = [];
-            for (let i = 0; i < gameList.length; i++) {
-                const { game_id, game_name, game_image, genres, interest_yn } = gameList[i].dataValues;
+        let dataArray = [];
+        for (let i = 0; i < gameList.length; i++) {
+            const { game_id, game_name, game_image, genres, interest_yn } = gameList[i].dataValues;
 
-                dataArray.push({
-                    game_id, game_name, game_image,
-                    genre: genres.map(genre => genre.name).join(', '),
-                    interest_yn
-                })
-            }
-            res.json({ data: dataArray });
+            dataArray.push({
+                game_id, game_name, game_image,
+                genre: genres.map(genre => genre.name).join(', '),
+                interest_yn
+            })
         }
+        res.json({ data: dataArray });
     },
     info: async (req, res) => {
         const { game_id } = req.query;
@@ -128,5 +124,13 @@ module.exports = {
 
             res.json({ data: { game_id: id, game_name: name, platforms_name, involved_companies_name, age_ratings, first_release_date: gameInfo.dataValues.first_release_date, game_image: cover_image_url, genre, interest_yn: gameInfo.dataValues.interest_yn } });
         }
+    },
+    genres: async (req, res) => {
+        const genreList = await genre.findAll({
+            attributes: [['id', 'genre_id'], ['name', 'genre_name']],
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.json({ data: { genreList } });
     }
 };

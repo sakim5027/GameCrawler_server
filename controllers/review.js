@@ -25,11 +25,7 @@ module.exports = {
             }
         });
 
-        if (reviewList.length === 0) {
-            res.status(404).send("get reviews error");
-        } else {
-            res.json({ data: { reviewList } });
-        }
+        res.json({ data: { reviewList } });
     },
     regist: async (req, res) => {
         const { game_id, rate, story, graphic, hardness, music, ux, contents } = req.body;

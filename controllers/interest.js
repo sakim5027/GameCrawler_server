@@ -15,14 +15,10 @@ module.exports = {
                 include: [{
                     model: interest,
                     required: true, //true는 inner join, false는 Left outer join
-                    where: { user_id: req.session.user_id, use_yn:'Y' }
+                    where: { user_id: req.session.user_id, use_yn: 'Y' }
                 }]
             }]
         });
-
-        if (genreList.length === 0) {
-            res.status(404).send("get interests error");
-        }
 
         //genre_id, genre_name 파싱
         for (let i = 0; i < genreList.length; i++) {
@@ -106,21 +102,17 @@ module.exports = {
         //db에서 관심카운트 조회
         if (game_id) {
             interestCount = await interest.findAndCountAll({
-                where: { game_id, use_yn:'Y' }
+                where: { game_id, use_yn: 'Y' }
             });
         } else {
             interestCount = await interest.findAndCountAll({
-                where: { user_id: req.session.user_id, use_yn:'Y' }
+                where: { user_id: req.session.user_id, use_yn: 'Y' }
             });
         }
 
-        if (interestCount.count === 0) {
-            res.status(404).send("get count-interest error");
-        } else {
-            const { count } = interestCount;
+        const { count } = interestCount;
 
-            res.json({ data: count });
-        }
+        res.json({ data: count });
     },
     regist: async (req, res) => {
         const { game_id } = req.body;

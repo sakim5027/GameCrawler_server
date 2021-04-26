@@ -81,6 +81,9 @@ app.delete("/interest/:interest_id", interestController.delete); //리뷰삭제
 app.get("/games", gameController.list); //게임목록조회
 app.get("/game", gameController.info); //게임정보조회
 
+//genre
+app.get("/genres", gameController.genres); //장르목록조회
+
 let server;
 
 if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
