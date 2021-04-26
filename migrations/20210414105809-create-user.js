@@ -22,14 +22,10 @@ module.exports = {
         allowNull: false
       },
       email: {
-        type: Sequelize.STRING(100),
-        allowNull: false
+        type: Sequelize.STRING(100)
       },
       genre: {
         type: Sequelize.STRING(30)
-      },
-      auth_id: {
-        type: Sequelize.STRING(50)
       },
       use_yn: {
         type: Sequelize.CHAR(1),

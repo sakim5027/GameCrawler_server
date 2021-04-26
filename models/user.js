@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     nickname: DataTypes.STRING,
     email: DataTypes.STRING,
     genre: DataTypes.STRING,
-    auth_id: DataTypes.STRING,
     use_yn: DataTypes.CHAR,
     signout_date: DataTypes.DATE,
     created_id: DataTypes.STRING,
