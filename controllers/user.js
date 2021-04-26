@@ -24,6 +24,27 @@ module.exports = {
             });
         }
     },
+    authLogin: async (req, res) => {
+        const { auth_id } = req.body;
+
+        //db에서 user정보 조회
+        const userInfo = await user.findOne({
+            where: { user_id:auth_id, password:crypterUtil.encrypt(process.env.AUTH_LOGIN_PASSWORD+''+auth_id), use_yn:'Y' }
+        });
+
+        if (!userInfo) {
+            res.status(404).send("post auth-login error");
+        } else {
+            //user_id session에 저장
+            req.session.user_id = userInfo.user_id;
+
+            //response에 user_id와 message를 담아 전송
+            res.json({
+                "user_id": req.session.user_id,
+                "message": "success post auth-login"
+            });
+        }
+    },
     logout: (req, res) => {
         //세션 해제
         req.session.destroy(function () {
@@ -53,6 +74,20 @@ module.exports = {
             res.status(500).send("post signup error");
         } else {
             res.send("success post signup");
+        }
+    },
+    authSignup: async (req, res) => {
+        const { auth_id, nickname, genre } = req.body;
+
+        //db에 user정보 저장
+        const result = await user.create({
+            user_id:auth_id, password:crypterUtil.encrypt(process.env.AUTH_LOGIN_PASSWORD+''+auth_id), nickname, genre,
+            created_id: auth_id, updated_id: auth_id
+        });
+        if (!result) {
+            res.status(500).send("post auth-signup error");
+        } else {
+            res.send("success post auth-signup");
         }
     },
     findId: async (req, res) => {
@@ -103,17 +138,20 @@ module.exports = {
         if (!userInfo) {
             res.status(404).send("get info error");
         } else {
-            const { password, nickname, email, genre } = userInfo;
+            const { nickname, email, genre } = userInfo;
 
             res.json({ nickname, email:crypterUtil.decrypt(email), genre });
         }
     },
     edit: async (req, res) => {
-        const { password, nickname, email, genre } = req.body;
+        const { nickname, genre } = req.body;
+        let { password, email } = req.body;
+        if(password) password = crypterUtil.encrypt(password);
+        if(email) email = crypterUtil.encrypt(email);
         
         //db의 user정보 수정
-        const result = await user.update({ password:crypterUtil.encrypt(password), nickname, email:crypterUtil.encrypt(email), genre },
-            {
+        const result = await user.update({password, nickname, email, genre},
+        {
                 where: { user_id: req.session.user_id }
             });
 

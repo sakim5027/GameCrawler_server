@@ -53,9 +53,11 @@ app.get("/", indexController);
 
 //user
 app.post("/user/login", userController.login); //로그인
+app.post("/user/auth-login", userController.authLogin); //OAuth로그인
 app.post("/user/logout", userController.logout); //로그아웃
 app.post("/user/check-login-id", userController.checkLoginId); //아이디중복체크
 app.post("/user/signup", userController.signup); //회원가입
+app.post("/user/auth-signup", userController.authSignup); //OAuth회원가입
 app.post("/user/find-id", userController.findId); //아이디찾기
 app.post("/user/find-password", userController.findPassword); //비밀번호찾기
 app.get("/user/info", userController.info); //회원정보조회
